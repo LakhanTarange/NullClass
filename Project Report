@@ -1,0 +1,98 @@
+  Project Report 
+1. Difference between driver.get() and driver.navigate().to()
+i. driver.get("URL")
+Loads a new web page in the current browser window.
+Waits for the page to load completely before moving to the next command.
+
+ii. driver.navigate().to("URL")
+Also loads a new web page but allows additional navigation like back, forward, and refresh using navigate().
+Functionally similar to get(), but part of a broader navigation interface.
+
+2. How to find an element by its ID
+WebElement element = driver.findElement(By.id("elementID"));
+
+3. Simple Selenium Code to Open Browser and Navigate to URL
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class OpenBrowser {
+    public static void main(String[] args) {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.example.com");
+        driver.quit();
+    }
+}
+
+4. Search → Add to Cart → Pay (>₹500) → Confirm (Between 6PM–7PM)
+LocalTime now = LocalTime.now();
+if (now.isAfter(LocalTime.of(18, 0)) && now.isBefore(LocalTime.of(19, 0))) {
+    // Steps:
+    // 1. Search Product
+    // 2. Add to cart
+    // 3. Proceed to payment
+    // 4. Validate payment > 500
+    // 5. Confirm order
+}
+
+5. Search Product with Filters (Price > 2k, Rating > 4, Brand starts with 'C') (3PM–6PM)
+LocalTime now = LocalTime.now();
+if (now.isAfter(LocalTime.of(15, 0)) && now.isBefore(LocalTime.of(18, 0))) {
+    // 1. Search Product
+    // 2. Apply brand filter (starts with 'C')
+    // 3. Apply price > 2000
+    // 4. Apply rating > 4
+}
+
+6. Monitor Price Change and Send Notification
+double threshold = 1500;
+WebElement priceElement = driver.findElement(By.id("price"));
+double currentPrice = Double.parseDouble(priceElement.getText().replace("₹", ""));
+
+if (currentPrice < threshold) {
+    // Trigger Email or Notification
+}
+
+7. Test Login & Profile Name Restriction (No A, C, G, I, L, K) (12PM–3PM)
+LocalTime now = LocalTime.now();
+if (now.isAfter(LocalTime.of(12, 0)) && now.isBefore(LocalTime.of(15, 0))) {
+    // Login
+    // Get profile name
+    String profileName = driver.findElement(By.id("profileName")).getText();
+    if (!profileName.matches("^[^ACGILKacgilk]*$")) {
+        System.out.println("Invalid characters in name!");
+    }
+}
+
+8. Add Multiple Products to Cart → Verify Total > ₹2000, Username = 10 Chars (6PM–7PM)
+LocalTime now = LocalTime.now();
+if (now.isAfter(LocalTime.of(18, 0)) && now.isBefore(LocalTime.of(19, 0))) {
+    // Add multiple products
+    // Get total price
+    double totalPrice = Double.parseDouble(driver.findElement(By.id("total")).getText().replace("₹", ""));
+    
+    // Get username
+    String username = driver.findElement(By.id("username")).getText();
+    
+    if (totalPrice > 2000 && username.length() == 10 && username.matches("^[a-zA-Z0-9]*$")) {
+        System.out.println("Test Passed");
+    }
+}
+
+9. Select Product from Search → Verify Product Page (Not Electronics or A-D Start) (3PM–6PM)
+LocalTime now = LocalTime.now();
+if (now.isAfter(LocalTime.of(15, 0)) && now.isBefore(LocalTime.of(18, 0))) {
+    // 1. Search Products
+    List<WebElement> products = driver.findElements(By.className("product"));
+
+    for (WebElement product : products) {
+        String name = product.getText();
+        if (!name.matches("^[ABCDabcd].*")) {
+            product.click();
+            String category = driver.findElement(By.id("category")).getText();
+            if (!category.equalsIgnoreCase("Electronics")) {
+                // Verify product page
+                break;
+            }
+        }
+    }
+}
